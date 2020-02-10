@@ -2,7 +2,7 @@
 *__THIS IS AN EDUCATIONAL PROJECT. IF YOU WANT TO COLLABORATE PLEASE CONTACT ME.__*
 
 ## Purpose
-The purpose of this project is to build a **custom bootloader and a custom kernel** for **Cortex-A9** processors. Right now the only version is implemented in QEMU, and not in real hardware, so there are be some simplifications that should be considered, mentioned [here](##QEMU).
+The purpose of this project is to build a **custom bootloader and a custom kernel** for **Cortex-A9** processors. Right now the only version is implemented in QEMU, and not in real hardware, so there are be some simplifications that should be considered, mentioned [here](#qemu).
 
 ## Prerequisites
 Install __qemu-system-arm__ as an emulating machine with
@@ -73,7 +73,7 @@ MEMORY
 
 ##### QEMU Vs Real hardware
 
-Qemu, by default, uses a stub code in the beginning of the RAM at 0x60000000 (see Memory Map in [Cortex-A9 TRF](https://developer.arm.com/docs/dui0448/latest/preface)) as a BIOS to do some initialization and to jump to address 0x60010000 where the kernel of the Os should be. This is implemented because QEMU assumes that there will be a Linux kernel and there is where we put our custom **bootloader+kernel** file, **kernel.bin**. This is the reason that in file **linkscript.ld** we link the virtual ROM in 0x60010000.
+Qemu, by default, uses a stub code in the beginning of the RAM at 0x60000000 (see Memory Map in [ARM CoreTile Express A9×4  TRF](https://developer.arm.com/docs/dui0448/latest/preface)) as a BIOS to do some initialization and to jump to address 0x60010000 where the kernel of the Os should be. This is implemented because QEMU assumes that there will be a Linux kernel and there is where we put our custom **bootloader+kernel** file, **kernel.bin**. This is the reason that in file **linkscript.ld** we link the virtual ROM in 0x60010000.
 
 This of course is something that in real hardware would not happen. In fact, in real situations, the above linkscript would link the bootloader in the start of the ROM or somewhere else if the system had a BIOS. Inserting the custom kernel as a Linux kernel is something we do for simplification in emulation and should be considered when the implementation is done for a real system.
 
