@@ -1,8 +1,10 @@
 # ArmOs
-*__THIS IS AN EDUCATIONAL PROJECT. IF YOU WANT TO COLLABORATE PLEASE CONTACT ME.__*
+*__THIS IS AN EDUCATIONAL PROJECT__*
 
 ## Purpose
-The purpose of this project is to build a **custom bootloader and a custom kernel** for **Cortex-A9** processors. Right now the only version is implemented in QEMU, and not in real hardware, so there are be some simplifications that should be considered, mentioned [here](#qemu).
+A **custom operaring system ArmOs**, consisting of **a bootloader, a kernel and an user space environment** for **32-bit Cortex-A9** processors.
+
+Right now the only version is implemented in QEMU using [ARM CoreTile Express A9×4](http://static6.arrow.com/aropdfconversion/e3f3993b3da6203224e41f1de309cd7e952d3307/datasheet_coretile_express_a9x4.pdf), and not in real hardware, so there are some simplifications that should be considered, mentioned [here](#qemu).
 
 ## Prerequisites
 Install __qemu-system-arm__ as an emulating machine with
@@ -10,10 +12,9 @@ Install __qemu-system-arm__ as an emulating machine with
 $ sudo apt install qemu-system-arm
 ```
 and a cross-compiler for compiling binaries for arm architectures.
+The current version uses a custom made one with [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng) and the [linaro](https://www.linaro.org/downloads/) cross-compiler.
 
-I am using a custom made one with [crosstool-ng](https://github.com/crosstool-ng/crosstool-ng) and the [linaro](https://www.linaro.org/downloads/). You could choose either of them or another cross-compiler of your choice.
-
-## Usage
+## Usage/Development
 
 * Download or clone the repository.
 
@@ -22,7 +23,7 @@ I am using a custom made one with [crosstool-ng](https://github.com/crosstool-ng
 $ make
 ```
 
-* To run the emulator with the custom bootloader and kernel run
+* Run the emulator with
 ```
 $ make run
 ```
@@ -38,15 +39,14 @@ You can also access [qemu monitor](https://en.wikibooks.org/wiki/QEMU/Monitor) t
 ```
 $ telnet localhost 22223
 ```
+    *,assuming that the VM is powered on.*
 
-* To disassembly the whole binary file (bootloader+kernel) run
+* To disassembly the whole binary file run
 ```
 $ make disassembly
 ```
 
 ## QEMU
-##### Board
-As mentioned above in the first stage of the development, ArmOs will be developed in QEMU. The exact program used is **qemu-system-arm** and the board is **vexprexx-a9**.
 
 ##### Running command
 With **make run** the following code is running.
@@ -62,8 +62,8 @@ run:
 	    -S -s                  #toggle on and off for debugging and running mode accordingly
 ```
 ##### ROM emulation
-Vexpress-a9 does not support the use of ROM memory so the trick to emulate such a functionality is to define 512 Mbyte of RAM (see above) and in the __linkscript to define the two sections of memory, one for refering as RAM and one as ROM__.
-```linkscript
+Versatile Express series do not support the use of ROM, so the trick to emulate such a functionality is to define 512 Mbyte of RAM (see above in the *make run* command) and in the __linker script to define the two sections of memory, one refering as RAM and one as ROM__.
+```
 MEMORY
 {
     ROM (rx) : ORIGIN = 0x60010000, LENGTH = 1M
@@ -73,13 +73,8 @@ MEMORY
 
 ##### QEMU Vs Real hardware
 
-Qemu, by default, uses a stub code in the beginning of the RAM at 0x60000000 (see Memory Map in [ARM CoreTile Express A9×4  TRF](https://developer.arm.com/docs/dui0448/latest/preface)) as a BIOS to do some initialization and to jump to address 0x60010000 where the kernel of the Os should be. This is implemented because QEMU assumes that there will be a Linux kernel and there is where we put our custom **bootloader+kernel** file, **kernel.bin**. This is the reason that in file **linkscript.ld** we link the virtual ROM in 0x60010000.
+Qemu, by default, uses a stub code in the beginning of the RAM at 0x60000000 (see Memory Map in [ARM CoreTile Express A9×4  TRF](https://developer.arm.com/docs/dui0448/latest/preface)) as a BIOS to do some initialization and to jump to address 0x60010000 where the kernel of the Os should be.
 
-This of course is something that in real hardware would not happen. In fact, in real situations, the above linkscript would link the bootloader in the start of the ROM or somewhere else if the system had a BIOS. Inserting the custom kernel as a Linux kernel is something we do for simplification in emulation and should be considered when the implementation is done for a real system.
-
-This is also the reason that ROM starts from 0x60010000 and not from 0x60000000. If done otherwise QEMU would start its own BIOS in 0x60000000 and after some commands it would jump in address 0x60010000 where it would find nothing.
-
-Below we can see in the first bytes of the RAM the stub code.
 ```
 (qemu) xp /10w 0x60000000
 0000000060000000: 0xe3a00000 0xe59f1004 0xe59f2004 0xe59ff004
@@ -87,7 +82,13 @@ Below we can see in the first bytes of the RAM the stub code.
 0000000060000020: 0x00000000 0x00000000
 
 ```
-And this is the memory (ROM) where kernel.bin is mapped:
+ This is implemented because adding the binary file with the __-kernel__ flag maps the code in address 0x60010000, since this is the address where a Linux kernel would have been mapped. *(QEMU is developed to emulate the Linux kernel.)*
+
+In file **linkscript.ld**, we link the virtual __ROM in 0x60010000. RAM is linked in 0x70000000__.
+
+*This is, of course, something that in real hardware would not happen. If this project is implemented on a real platform in the future, this should be considered. __The linker script should be modified, in this case.__*
+
+This is the memory (ROM) where kernel.bin is mapped:
 ```
 (qemu) xp /100w 0x60010000
 0000000060010000: 0xea000006 0xea00002c 0xeafffffe 0xea00002a

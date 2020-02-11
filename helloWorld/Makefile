@@ -38,7 +38,7 @@ run:
 	    -nographic\
 	    -kernel kernel.bin\
 		-monitor telnet:127.0.0.1:22223,server,nowait\
-	    -S -s
+	    #-S -s
 
 clean:
 	rm -f *.elf *.o $(BINS)
