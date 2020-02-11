@@ -2,7 +2,7 @@
 *__THIS IS AN EDUCATIONAL PROJECT__*
 
 ## Purpose
-A **custom operaring system ArmOs**, consisting of **a bootloader, a kernel and an user space environment** for **32-bit Cortex-A9** processors.
+A **custom operaring system ArmOs**, consisting of **a bootloader, a kernel and a user space environment** for **32-bit Cortex-A9** processors.
 
 Right now the only version is implemented in QEMU using [ARM CoreTile Express A9×4](http://static6.arrow.com/aropdfconversion/e3f3993b3da6203224e41f1de309cd7e952d3307/datasheet_coretile_express_a9x4.pdf), and not in real hardware, so there are some simplifications that should be considered, mentioned [here](#qemu).
 
@@ -35,11 +35,10 @@ and then inside the gdb run
 ```
 (qemu) target remote localhost:1234
 ```
-You can also access [qemu monitor](https://en.wikibooks.org/wiki/QEMU/Monitor) typing:
+Assuming that the VM is powered on, access [qemu monitor](https://en.wikibooks.org/wiki/QEMU/Monitor) typing:
 ```
 $ telnet localhost 22223
 ```
-    *,assuming that the VM is powered on.*
 
 * To disassembly the whole binary file run
 ```
