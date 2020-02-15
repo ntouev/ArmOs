@@ -1,5 +1,6 @@
 CROSS_COMP = ~/x-tools/arm-cortexa9_neon-linux-gnueabihf/bin/arm-cortexa9_neon-linux-gnueabihf
 #CROSS_COMP = ~/linaro/gcc-linaro-arm-linux-gnueabihf-4.8-2014.04_linux/bin/arm-linux-gnueabihf
+#CROSS_COMP = arm-none-eabi
 
 CC =  $(CROSS_COMP)-gcc
 AS =  $(CROSS_COMP)-as

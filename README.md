@@ -2,9 +2,12 @@
 *__THIS IS AN EDUCATIONAL PROJECT__*
 
 ## Purpose
-A **custom operaring system ArmOs**, consisting of **a bootloader, a kernel and a user space environment** for **32-bit Cortex-A9** processors.
+A **custom operaring system ArmOs**, consisting of **a bootloader, a kernel and a user space environment** for **32-bit Cortex-A9** processors, using __ARMv7-A__ architecture.
 
-Right now the only version is implemented in QEMU using [ARM CoreTile Express A9×4](http://static6.arrow.com/aropdfconversion/e3f3993b3da6203224e41f1de309cd7e952d3307/datasheet_coretile_express_a9x4.pdf), and not in real hardware, so there are some simplifications that should be considered, mentioned [here](#qemu).
+Right now the only version is implemented in QEMU using [Versatile Express](http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.subset.boards.express/index.html) platform, and not in real hardware, so there are some simplifications that should be considered, mentioned [here](#qemu).
+
+* [Motherboard](http://infocenter.arm.com/help/topic/com.arm.doc.dui0447j/DUI0447J_v2m_p1_trm.pdf)
+* [Daughterboard](https://developer.arm.com/docs/dui0448/latest/preface)
 
 ## Prerequisites
 Install __qemu-system-arm__ as an emulating machine with
@@ -61,7 +64,7 @@ run:
 	    -S -s                  #toggle on and off for debugging and running mode accordingly
 ```
 ##### ROM emulation
-Versatile Express series do not support the use of ROM, so the trick to emulate such a functionality is to define 512 Mbyte of RAM (see above in the *make run* command) and in the __linker script to define the two sections of memory, one refering as RAM and one as ROM__.
+Versatile Express series, in QEMU, do not support the use of ROM, so the trick to emulate such a functionality is to define 512 Mbyte of RAM (see above in the *make run* command) and in the __linker script to define the two sections of memory, one refering as RAM and one as ROM__.
 ```
 MEMORY
 {
