@@ -2,16 +2,19 @@
 #include <stdbool.h>
 #include <string.h>
 #include "uart_pl011.h"
+#include "shell.h"
 
 char buf[64];
 uint8_t buf_idx = 0u;
 
 static void parse_cmd(void) {
     if (!strncmp("help\r", buf, strlen("help\r"))) {
-        uart_write("Just type and see what happens!\n");
+        uart_write("Supported instructions:\nuname\n");
     } else if (!strncmp("uname\r", buf, strlen("uname\r"))) {
-        uart_write("bare-metal arm 06_uart\n");
+        uart_write("armos_0.1\n");
     }
+
+    shell_write();
 }
 
 int c_entry() {
@@ -23,13 +26,12 @@ int c_entry() {
         };
         uart_configure(&config);
 
-        uart_putchar('A');
-        uart_putchar('B');
-        uart_putchar('C');
-        uart_putchar('\n');
-
-        uart_write("I love drivers!\n");
-        uart_write("Type below...\n");
+        uart_write("\n##############################################\n");
+        uart_write("##### Welcome to ArmOs Operating System! #####\n");
+        uart_write("######## This is version armos_0.1 :) ########\n");
+        uart_write("##############################################\n\n");
+        uart_write("Type \"help\" to see the available commands...\n\n");
+        shell_write();
 
         while (1) {
             char c;

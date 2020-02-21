@@ -8,7 +8,7 @@ LD =  $(CROSS_COMP)-gcc #use gcc as a frontend of the linker to avoid missing li
 OBJCOPY =  $(CROSS_COMP)-objcopy
 
 BINS = armos.bin
-OBJS = bootloader.o init.o uart_pl011.o
+OBJS = bootloader.o init.o shell.o uart_pl011.o
 
 all: $(BINS)
 
@@ -22,6 +22,9 @@ bootloader.o: bootloader.s
 	$(AS) -g $< -o $@
 
 init.o: init.c
+	$(CC) -c -nostartfiles -g -Wall $< -o $@
+
+shell.o: shell.c
 	$(CC) -c -nostartfiles -g -Wall $< -o $@
 
 uart_pl011.o: uart_pl011.c

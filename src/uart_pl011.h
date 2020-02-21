@@ -1,10 +1,6 @@
 #ifndef UART_PL011_H
 #define UART_PL011_H
 
-#include <stdint.h>
-#include <stdbool.h>
-#include <stdlib.h>
-
 typedef volatile struct __attribute__((packed)) {
         uint32_t DR;                            /* 0x0 Data Register */
         uint32_t RSRECR;                        /* 0x4 Receive status / error clear register */

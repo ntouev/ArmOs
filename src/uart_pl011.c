@@ -1,3 +1,6 @@
+#include <stdint.h>
+#include <stdbool.h>
+#include <stdlib.h>
 #include <math.h>
 #include "uart_pl011.h"
 
