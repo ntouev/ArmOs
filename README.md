@@ -1,5 +1,5 @@
 # ArmOs
-*__THIS IS AN EDUCATIONAL PROJECT__*
+*__THIS IS MY BONUS PROJECT FOR EMBEDDED SYSTEMS DESIGN LECTURE IN NTUA__*
 
 ## Purpose
 A **custom operaring system ArmOs**, consisting of **a bootloader, a kernel and a user space environment** for **32-bit Cortex-A9** processors, using __ARMv7-A__ architecture.
